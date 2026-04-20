@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webapp
+  labels:
+    app: webapp
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: webapp
@@ -12,9 +14,28 @@ spec:
       labels:
         app: webapp
     spec:
-    containers:
-    - name: webapp
-      image: webapp:latest
-      imagePullPolicy: Never
-      ports:
-      - containerPort: 5000
+      containers:
+      - name: webapp
+        image: webapp:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
