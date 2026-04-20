@@ -2,6 +2,6 @@ from flask import Flask
 app=Flask(__name__)
 @app.route("/")
 def home():
-    return "update ci cd - Déployée automatiquement1"
+    return "update ci cd - Déployée automatiquement test"
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
